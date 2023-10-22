@@ -96,9 +96,9 @@ The To-Do List Application offers the following API endpoints for your convenien
 - **PUT /api/v1/tasks/{id}**: Update the existing task.
 - **DELETE /api/v1/tasks/{id}**: Delete a specific task by id.
 
-To Manually test the Application I have added the Postman collection in the root directory of the project
+To manually test the Application I have added the Postman collection in the root directory of the project
 
-File name : To Do List API.postman_collection.json
+File name : - **To Do List API.postman_collection.json}**
 
 
 ## Contributing
