@@ -47,5 +47,12 @@ public class TaskServiceImpl implements TaskService{
             }
         return existingTask;
     }
+    public void deleteATask(Long id) throws TaskNotFoundException {
+            if (taskRepository.findById(id).isPresent()){
+                taskRepository.deleteById(id);
+            } else {
+                throw new TaskNotFoundException("Task not found for this id, " + id);
+            }
+        }
 
 }

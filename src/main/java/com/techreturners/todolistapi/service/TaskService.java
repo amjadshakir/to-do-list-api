@@ -12,4 +12,5 @@ public interface TaskService {
     Task getTaskById(Long id) throws TaskNotFoundException;
     List<Task> getAllTasksByTitle(String title) throws TaskNotFoundException;
     public Task replaceExistingTask(Long id, Task task) throws TaskNotFoundException;
+    public void deleteATask(Long id) throws TaskNotFoundException;
 }

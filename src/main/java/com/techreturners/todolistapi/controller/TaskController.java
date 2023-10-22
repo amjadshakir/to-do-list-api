@@ -43,4 +43,9 @@ public class TaskController {
         Task updatedTask = taskService.replaceExistingTask(id, task);
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteATask(@Valid @PathVariable Long id) throws TaskNotFoundException {
+        taskService.deleteATask(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

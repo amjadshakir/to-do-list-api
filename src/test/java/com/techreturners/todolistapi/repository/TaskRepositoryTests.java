@@ -83,4 +83,12 @@ class TaskRepositoryTests {
         List<Task> tasks = taskRepository.findByTitle("study");
         assertThat(tasks).isEmpty();
     }
+    @Test
+    void testDeleteByTaskById(){
+        Task task = new Task(1L, "study", "practice java", false);
+        taskRepository.save(task);
+        taskRepository.deleteById(task.getId());
+        assertThat(taskRepository.findById(task.getId())).isEmpty();;
+
+    }
 }

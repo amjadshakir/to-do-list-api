@@ -75,7 +75,7 @@ class TaskServiceTests {
         assertThrows(TaskNotFoundException.class, () -> taskServiceImpl.getTaskById(id));
     }
     @Test
-    public void testGetTasksByTitleReturnsListOfTasks() {
+    void testGetTasksByTitleReturnsListOfTasks() {
         List<Task> tasks = new ArrayList<>();
         Task task1 = new Task(1L, "study", "practice java", false);
         Task task2 = new Task(2L, "study", "practice java", false);
@@ -102,7 +102,7 @@ class TaskServiceTests {
         assertThat(actualResult).isEqualTo(tasks);
     }
     @Test
-    public void testReplaceExistingTaskByIdReturnsUpdatedTask() throws TaskNotFoundException {
+    void testReplaceExistingTaskByIdReturnsUpdatedTask() throws TaskNotFoundException {
         Task task = new Task(1L, "study", "practice java", false);
         Task updatedTask = new Task(1L, "cook", "dinner", false);
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
@@ -113,9 +113,25 @@ class TaskServiceTests {
     }
 
     @Test
-    public void testReplaceExistingTaskByIdReturnsTaskNotFoundException() throws TaskNotFoundException {
+    void testReplaceExistingTaskByIdReturnsTaskNotFoundException() throws TaskNotFoundException {
         Task task = new Task(1L, "study", "practice java", false);
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(TaskNotFoundException.class, () -> taskServiceImpl.replaceExistingTask(1L, task));
+    }
+    @Test
+    void testDeleteTaskByIdReturnsUpdatedTask() throws TaskNotFoundException {
+        Task task = new Task(1L, "study", "practice java", false);
+
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+
+        taskServiceImpl.replaceExistingTask(1L, task);
+        assertThat(taskServiceImpl.getTaskById(1L)).isEqualTo(task);
+    }
+
+    @Test
+    void testDeleteTaskByIdReturnsTaskNotFoundException() throws TaskNotFoundException {
+        Task task = new Task(1L, "study", "practice java", false);
+        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(TaskNotFoundException.class, () -> taskServiceImpl.deleteATask(1L));
     }
 }
