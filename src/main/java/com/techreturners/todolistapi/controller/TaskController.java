@@ -6,10 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -21,5 +20,9 @@ public class TaskController {
     public ResponseEntity<Task> addTask(@RequestBody @Valid Task task){
         Task newTask = taskService.insertTask(task);
         return new ResponseEntity<>(newTask, HttpStatus.CREATED);
+    }
+    @GetMapping
+    public ResponseEntity<List<Task>> getAllTasks() {
+        return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
 }

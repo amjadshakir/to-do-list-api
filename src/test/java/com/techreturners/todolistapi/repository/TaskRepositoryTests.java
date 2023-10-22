@@ -25,4 +25,20 @@ class TaskRepositoryTests {
         assertEquals("To practice Java", retrievedTask.get().getDescription());
         assertFalse(retrievedTask.get().isCompleted());
     }
+    @Test
+    void testFindAllTasksReturns2Tasks(){
+        Task task01 = new Task(1L, "study", "practice java", false);
+        taskRepository.save(task01);
+
+        Task task02 = new Task(2L, "cook", "dinner", false);
+        taskRepository.save(task02);
+
+        Iterable<Task> tasks = taskRepository.findAll();
+        assertThat(tasks).hasSize(2);
+    }
+    @Test
+    void testFindAllTasksReturnsEmptyTasks(){
+        Iterable<Task> tasks = taskRepository.findAll();
+        assertThat(tasks).hasSize(0);
+    }
 }
