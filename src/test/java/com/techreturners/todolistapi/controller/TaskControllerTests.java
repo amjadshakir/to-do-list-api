@@ -176,4 +176,16 @@ class TaskControllerTests {
 
         verify(taskService, times(1)).getAllTasksByTitle("study");
     }
+    @Test
+    public void testReplaceExistingTaskDetailsReturns200() throws Exception, TaskNotFoundException {
+        Task task = new Task(1L, "study", "practice java", false);
+        when(taskService.replaceExistingTask(1L, task)).thenReturn(task);
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.put("/api/v1/tasks/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(task)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(taskService, times(1)).replaceExistingTask(1L, task);
+    }
 }

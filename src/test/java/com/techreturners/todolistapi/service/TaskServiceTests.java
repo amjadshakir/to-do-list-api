@@ -101,4 +101,21 @@ class TaskServiceTests {
         assertThat(actualResult).isEmpty();
         assertThat(actualResult).isEqualTo(tasks);
     }
+    @Test
+    public void testReplaceExistingTaskByIdReturnsUpdatedTask() throws TaskNotFoundException {
+        Task task = new Task(1L, "study", "practice java", false);
+        Task updatedTask = new Task(1L, "cook", "dinner", false);
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+
+        taskServiceImpl.replaceExistingTask(1L, updatedTask);
+        taskServiceImpl.getTaskById(1L);
+        assertThat(taskServiceImpl.getTaskById(1L)).isEqualTo(updatedTask);
+    }
+
+    @Test
+    public void testReplaceExistingTaskByIdReturnsTaskNotFoundException() throws TaskNotFoundException {
+        Task task = new Task(1L, "study", "practice java", false);
+        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(TaskNotFoundException.class, () -> taskServiceImpl.replaceExistingTask(1L, task));
+    }
 }

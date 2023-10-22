@@ -38,4 +38,9 @@ public class TaskController {
         List<Task> tasksByTitle = taskService.getAllTasksByTitle(title);
         return new ResponseEntity<>(tasksByTitle, HttpStatus.OK);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> replaceExistingTaskDetails(@Valid @PathVariable Long id, @RequestBody Task task) throws TaskNotFoundException {
+        Task updatedTask = taskService.replaceExistingTask(id, task);
+        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+    }
 }

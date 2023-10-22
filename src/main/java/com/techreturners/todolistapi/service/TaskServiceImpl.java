@@ -33,5 +33,19 @@ public class TaskServiceImpl implements TaskService{
     public List<Task> getAllTasksByTitle(String title){
         return new ArrayList<>(taskRepository.findByTitle(title));
     }
+    public Task replaceExistingTask(Long id, Task task) throws TaskNotFoundException{
+        Task existingTask;
+            if (taskRepository.findById(id).isPresent()){
+                existingTask = taskRepository.findById(id).get();
+                existingTask.setTitle(task.getTitle());
+                existingTask.setDescription(task.getDescription());
+                existingTask.setCompleted(task.isCompleted());
+                taskRepository.save(existingTask);
+
+            } else {
+                throw new TaskNotFoundException("Task not found for this id, " +id);
+            }
+        return existingTask;
+    }
 
 }
