@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.techreturners</groupId>
 	<artifactId>to-do-list-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>to-do-list-api</name>
 	<description>To Do List API Project</description>
 	<properties>
