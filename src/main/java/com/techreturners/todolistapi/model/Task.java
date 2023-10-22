@@ -19,11 +19,11 @@ public class Task {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Title cannot be null or empty")
     @Column
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Description cannot be null or empty")
     @Column
     private String description;
 
