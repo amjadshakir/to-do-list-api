@@ -4,6 +4,8 @@ import com.techreturners.todolistapi.model.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.Collections;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,5 +42,20 @@ class TaskRepositoryTests {
     void testFindAllTasksReturnsEmptyTasks(){
         Iterable<Task> tasks = taskRepository.findAll();
         assertThat(tasks).hasSize(0);
+    }
+    @Test
+    void testFindByIdReturnsATask(){
+        Task task = new Task(1L, "study", "practice java", false);
+        taskRepository.save(task);
+
+        Iterable<Task> retrievedTask = taskRepository.findAllById(Collections.singleton(task.getId()));
+        assertThat(retrievedTask).isNotNull();
+        assertThat(retrievedTask).hasSize(1);
+    }
+    @Test
+    void testFindByIdReturnsNoTask(){
+        Iterable<Task> retrievedTask = taskRepository.findAllById(Collections.singleton(1L));
+        assertThat(retrievedTask).isEmpty();
+        assertThat(retrievedTask).hasSize(0);
     }
 }

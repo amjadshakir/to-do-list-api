@@ -1,6 +1,7 @@
 package com.techreturners.todolistapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techreturners.todolistapi.exception.TaskNotFoundException;
 import com.techreturners.todolistapi.model.Task;
 import com.techreturners.todolistapi.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +75,7 @@ class TaskControllerTests {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(taskAsString))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
-        
+
 
     }
     @Test
@@ -116,5 +117,32 @@ class TaskControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         verify(taskService, times(1)).getAllTasks();
+    }
+    @Test
+    void testGetTaskByIdReturnsATask() throws Exception, TaskNotFoundException {
+
+        Task task = new Task(1L, "study", "practice java", false);
+
+        when(taskService.getTaskById(1L)).thenReturn(task);
+
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/v1/tasks/" + task.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("study"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("practice java"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.completed").value(false));
+
+        verify(taskService, times(1)).getTaskById(1L);
+    }
+
+    @Test
+    void testGetTaskByIdReturnsTaskNotFoundException() throws TaskNotFoundException, Exception {
+
+        Task task = new Task(1L, "study", "practice java", false);
+
+        when(taskService.getTaskById(1L)).thenThrow(TaskNotFoundException.class);
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.techreturners.todolistapi.controller;
 
+import com.techreturners.todolistapi.exception.TaskNotFoundException;
 import com.techreturners.todolistapi.model.Task;
 import com.techreturners.todolistapi.service.TaskService;
 import jakarta.validation.Valid;
@@ -24,5 +25,12 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskDetailsById(@Valid @PathVariable Long id) throws TaskNotFoundException {
+        Task task = taskService.getTaskById(id);
+        return new ResponseEntity<>(task, HttpStatus.OK);
+
     }
 }

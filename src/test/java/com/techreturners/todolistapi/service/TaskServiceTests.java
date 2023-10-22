@@ -1,5 +1,6 @@
 package com.techreturners.todolistapi.service;
 
+import com.techreturners.todolistapi.exception.TaskNotFoundException;
 import com.techreturners.todolistapi.model.Task;
 import com.techreturners.todolistapi.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @DataJpaTest
@@ -53,5 +56,22 @@ class TaskServiceTests {
 
         assertThat(actualResult).hasSize(0);
         assertThat(actualResult).isEqualTo(tasks);
+    }
+    @Test
+    void testGetTaskByIdReturnsATask() throws TaskNotFoundException {
+        Task task = new Task(1L, "study", "practice java", false);
+
+        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+
+        Task actualResult = taskServiceImpl.getTaskById(1L);
+
+        assertThat(actualResult).isEqualTo(task);
+    }
+
+    @Test
+    void testGetTaskByIdReturnsTaskNotFoundException()  {
+        Long id = 1L;
+        when(taskRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(TaskNotFoundException.class, () -> taskServiceImpl.getTaskById(id));
     }
 }
