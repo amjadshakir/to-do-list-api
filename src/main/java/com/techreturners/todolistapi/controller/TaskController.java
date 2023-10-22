@@ -33,4 +33,9 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.OK);
 
     }
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<Task>> getAllTasksByTitle(@Valid @PathVariable String title) throws TaskNotFoundException {
+        List<Task> tasksByTitle = taskService.getAllTasksByTitle(title);
+        return new ResponseEntity<>(tasksByTitle, HttpStatus.OK);
+    }
 }

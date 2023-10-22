@@ -30,4 +30,8 @@ public class TaskServiceImpl implements TaskService{
             }
         return task;
     }
+    public List<Task> getAllTasksByTitle(String title){
+        return new ArrayList<>(taskRepository.findByTitle(title));
+    }
+
 }

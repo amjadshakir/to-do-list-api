@@ -10,4 +10,5 @@ public interface TaskService {
     Task insertTask(Task task);
     List<Task> getAllTasks();
     Task getTaskById(Long id) throws TaskNotFoundException;
+    List<Task> getAllTasksByTitle(String title) throws TaskNotFoundException;
 }

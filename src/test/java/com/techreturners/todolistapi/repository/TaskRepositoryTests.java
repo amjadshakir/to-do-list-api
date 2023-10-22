@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,5 +59,28 @@ class TaskRepositoryTests {
         Iterable<Task> retrievedTask = taskRepository.findAllById(Collections.singleton(1L));
         assertThat(retrievedTask).isEmpty();
         assertThat(retrievedTask).hasSize(0);
+    }
+    @Test
+    void testFindTasksByTitleReturns2Tasks(){
+        List<Task> tasks = new ArrayList<>();
+        Task task01 = new Task(1L, "learn", "practice java", false);
+        taskRepository.save(task01);
+
+        Task task02 = new Task(2L, "cook", "dinner", false);
+        taskRepository.save(task02);
+
+        Task task03 = new Task(3L, "learn", "practice javascript", false);
+        tasks.add(task01);
+        tasks.add(task03);
+        taskRepository.saveAll(tasks);
+
+        List<Task> retrievedTasks = taskRepository.findByTitle("study");
+        assertThat(tasks).hasSize(2);
+    }
+
+    @Test
+    void testFindTasksByTitleReturnsEmptyTasks(){
+        List<Task> tasks = taskRepository.findByTitle("study");
+        assertThat(tasks).isEmpty();
     }
 }

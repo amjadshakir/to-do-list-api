@@ -145,4 +145,35 @@ class TaskControllerTests {
 
 
     }
+    @Test
+    void testGetTasksByTitleReturnsTasks() throws Exception, TaskNotFoundException {
+
+        List<Task> tasks = new ArrayList<>();
+        Task task1 = new Task(1L, "study", "practice java", false);
+        tasks.add(task1);
+        when(taskService.getAllTasksByTitle("study")).thenReturn(tasks);
+
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/v1/tasks/title/"+ task1.getTitle()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("study"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].description").value("practice java"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].completed").value(false));
+
+        verify(taskService, times(1)).getAllTasksByTitle("study");
+    }
+
+    @Test
+    void testGetTasksByTitleReturnsEmptyTasks() throws Exception, TaskNotFoundException {
+
+        List<Task> tasks = new ArrayList<>();
+        when(taskService.getAllTasks()).thenReturn(tasks);
+
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/v1/tasks/title/"+ "study"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(taskService, times(1)).getAllTasksByTitle("study");
+    }
 }

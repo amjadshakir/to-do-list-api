@@ -74,4 +74,31 @@ class TaskServiceTests {
         when(taskRepository.findById(id)).thenReturn(Optional.empty());
         assertThrows(TaskNotFoundException.class, () -> taskServiceImpl.getTaskById(id));
     }
+    @Test
+    public void testGetTasksByTitleReturnsListOfTasks() {
+        List<Task> tasks = new ArrayList<>();
+        Task task1 = new Task(1L, "study", "practice java", false);
+        Task task2 = new Task(2L, "study", "practice java", false);
+        Task task3 = new Task(3L, "study", "practice java", false);
+        tasks.add(task1);
+
+        when(taskRepository.findByTitle("study")).thenReturn(tasks);
+
+        List<Task> actualResult = taskServiceImpl.getAllTasksByTitle("study");
+
+        assertThat(actualResult).hasSize(1);
+        assertThat(actualResult).isEqualTo(tasks);
+    }
+
+    @Test
+    void testGetTasksByTitleReturnsEmptyTasks() {
+        List<Task> tasks = new ArrayList<>();
+
+        when(taskRepository.findByTitle("study")).thenReturn(tasks);
+
+        List<Task> actualResult = taskServiceImpl.getAllTasksByTitle("study");
+
+        assertThat(actualResult).isEmpty();
+        assertThat(actualResult).isEqualTo(tasks);
+    }
 }
